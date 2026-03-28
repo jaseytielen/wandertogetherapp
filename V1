@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Wander Together</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f2eb;
+  --card: #ffffff;
+  --brown: #3a3228;
+  --muted: #b8a898;
+  --accent: #c4956a;
+  --border: #ede8e0;
+  --soft: #f0ebe2;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  background: var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--brown);
+  max-width: 430px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+.header {
+  padding: 3rem 1.75rem 1.5rem;
+  background: var(--bg);
+}
+
+.header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+
+.wordmark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.avatars { display: flex; }
+.av {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 500;
+  border: 2px solid var(--bg);
+}
+.av1 { background: #d4b896; color: #5c3d1e; }
+.av2 { background: #b8d4c8; color: #1e4a3d; margin-left: -6px; }
+
+.page-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--brown);
+}
+.page-title em { font-style: italic; color: var(--accent); }
+
+.page-sub {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 300;
+  margin-top: 0.4rem;
+  letter-spacing: 0.3px;
+}
+
+.nav-pills {
+  display: flex;
+  gap: 6px;
+  padding: 0 1.75rem 1.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-pills::-webkit-scrollbar { display: none; }
+
+.pill-btn {
+  flex-shrink: 0;
+  padding: 7px 16px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.pill-btn.active {
+  background: var(--brown);
+  color: #fff;
+  border-color: var(--brown);
+}
+
+.alert-strip {
+  margin: 0 1.75rem 1.25rem;
+  background: var(--card);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.alert-dot-pulse {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #5aa85a;
+  flex-shrink: 0;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.5; transform:scale(0.8); }
+}
+.alert-txt { font-size: 12px; color: var(--brown); flex: 1; line-height: 1.5; }
+.alert-txt strong { font-weight: 500; }
+.alert-close { color: var(--muted); cursor: pointer; font-size: 18px; line-height: 1; }
+
+.page { display: none; padding-bottom: 90px; }
+.page.active { display: block; }
+
+.dest-list { padding: 0 1.75rem; display: flex; flex-direction: column; gap: 10px; }
+
+.dest-card {
+  background: var(--card);
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+  animation: riseIn 0.45s ease both;
+}
+.dest-card:hover { transform: translateY(-2px); }
+
+@keyframes riseIn {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.dest-card:nth-child(1){animation-delay:.04s}
+.dest-card:nth-child(2){animation-delay:.08s}
+.dest-card:nth-child(3){animation-delay:.12s}
+.dest-card:nth-child(4){animation-delay:.16s}
+.dest-card:nth-child(5){animation-delay:.20s}
+.dest-card:nth-child(6){animation-delay:.24s}
+.dest-card:nth-child(7){animation-delay:.28s}
+.dest-card:nth-child(8){animation-delay:.32s}
+.dest-card:nth-child(9){animation-delay:.36s}
+
+.card-face {
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.card-left { flex: 1; }
+.card-flag { font-size: 26px; margin-bottom: 0.75rem; display: block; }
+.card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 300;
+  color: var(--brown);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.card-region { font-size: 12px; color: var(--muted); font-weight: 300; }
+.card-badges { display: flex; gap: 5px; margin-top: 0.75rem; flex-wrap: wrap; }
+.badge { font-size: 11px; padding: 3px 9px; border-radius: 20px; background: var(--soft); color: #7a6a5a; }
+.badge-baby { background: #fde8f0; color: #8a3050; }
+
+.card-right { text-align: right; flex-shrink: 0; }
+.card-price-sub { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
+.card-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 300;
+  color: var(--brown);
+  line-height: 1;
+}
+.price-trend { font-size: 11px; font-weight: 500; display: block; margin-top: 4px; }
+.trend-down { color: #5aa85a; }
+.trend-up   { color: #d05050; }
+.trend-flat { color: var(--muted); }
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.live-dot { width: 5px; height: 5px; border-radius: 50%; background: #5aa85a; animation: pulse 2s infinite; }
+
+.card-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 1.5rem 1rem;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.chevron-icon {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--soft);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  transition: transform 0.25s;
+}
+.dest-card.open .chevron-icon { transform: rotate(180deg); }
+
+.card-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.dest-card.open .card-body { max-height: 520px; }
+
+.card-body-inner {
+  border-top: 1px solid var(--border);
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.meta-strip { display: flex; margin-bottom: 1.25rem; }
+.meta-item {
+  flex: 1;
+  text-align: center;
+  padding: 0.75rem 0;
+  border-right: 1px solid var(--border);
+}
+.meta-item:last-child { border-right: none; }
+.meta-lbl { font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.meta-val { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; color: var(--brown); }
+
+.spots-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.spots-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 1.25rem; }
+.spot { font-size: 12px; color: #7a6a5a; background: var(--soft); padding: 5px 11px; border-radius: 20px; }
+
+.book-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+.book-link {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 10px 6px; border-radius: 12px; text-decoration: none;
+  font-size: 11px; font-weight: 400; transition: opacity 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.book-link:hover { opacity: 0.8; }
+.bl-ico { font-size: 16px; }
+.bl-sky { background: #eef2fc; color: #2255bb; }
+.bl-bkg { background: #e6f2ee; color: #0a4a3a; }
+.bl-air { background: #fdeee6; color: #c04010; }
+
+.dream-divider {
+  display: flex; align-items: center; gap: 12px;
+  padding: 1.5rem 1.75rem 1rem;
+}
+.dream-line { flex: 1; height: 1px; background: var(--border); }
+.dream-txt {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px; font-style: italic; color: var(--muted); white-space: nowrap;
+}
+
+/* PRICES PAGE */
+.price-page { padding: 0 1.75rem 90px; }
+
+.api-note {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-top: 1.25rem;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.api-note strong { color: var(--brown); font-weight: 500; }
+
+.section-eyebrow {
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); padding: 0.5rem 0 0.6rem;
+}
+
+.price-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 0.5rem 1.5rem;
+  margin-bottom: 10px;
+}
+
+.price-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.price-item:last-child { border-bottom: none; }
+
+.pi-left { display: flex; align-items: center; gap: 12px; }
+.pi-flag { font-size: 20px; }
+.pi-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; color: var(--brown); }
+.pi-route { font-size: 11px; color: var(--muted); }
+.pi-right { text-align: right; }
+.pi-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; }
+.pi-trend { font-size: 11px; font-weight: 500; }
+
+.tip-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 10px;
+}
+.tip-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-weight: 300; color: var(--brown); margin-bottom: 0.5rem;
+}
+.tip-text { font-size: 13px; color: #7a6a5a; line-height: 1.7; font-weight: 300; }
+
+/* ALERTS PAGE */
+.alerts-page { padding: 0 1.75rem 90px; }
+
+.form-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 10px;
+  margin-top: 1.25rem;
+}
+.form-card + .form-card { margin-top: 0; }
+
+.form-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 300; color: var(--brown); margin-bottom: 0.25rem;
+}
+.form-sub { font-size: 12px; color: var(--muted); font-weight: 300; margin-bottom: 1.25rem; line-height: 1.6; }
+
+.field { margin-bottom: 10px; }
+.field-label {
+  font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase;
+  color: var(--muted); display: block; margin-bottom: 5px;
+}
+.field-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--soft);
+  color: var(--brown);
+  outline: none;
+  transition: border-color 0.2s;
+  font-weight: 300;
+}
+.field-input:focus { border-color: var(--accent); background: #fff; }
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.save-btn {
+  width: 100%; margin-top: 6px; padding: 13px;
+  background: var(--brown); color: #fff; border: none;
+  border-radius: 12px; font-size: 14px;
+  font-family: 'DM Sans', sans-serif; font-weight: 400;
+  cursor: pointer; letter-spacing: 0.3px; transition: opacity 0.2s;
+}
+.save-btn:hover { opacity: 0.88; }
+
+.toggle-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.9rem 0; border-bottom: 1px solid var(--border);
+}
+.toggle-item:last-child { border-bottom: none; }
+.ti-label { font-size: 14px; color: var(--brown); font-weight: 300; }
+.ti-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.toggle {
+  width: 42px; height: 24px; background: var(--border); border-radius: 12px;
+  border: none; position: relative; cursor: pointer; transition: background 0.25s; flex-shrink: 0;
+}
+.toggle.on { background: var(--accent); }
+.toggle::after {
+  content: ''; position: absolute;
+  width: 18px; height: 18px; background: #fff; border-radius: 50%;
+  top: 3px; left: 3px; transition: transform 0.25s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.toggle.on::after { transform: translateX(18px); }
+
+.log-item {
+  display: flex; gap: 12px; padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border); align-items: flex-start;
+}
+.log-item:last-child { border-bottom: none; }
+.log-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+.log-text { font-size: 13px; color: var(--brown); line-height: 1.55; font-weight: 300; }
+.log-time { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* BOTTOM NAV */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 430px;
+  background: rgba(247,242,235,0.94);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border);
+  display: flex; padding: 10px 0 20px; z-index: 100;
+}
+.bnav-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  border: none; background: transparent; cursor: pointer;
+  opacity: 0.4; transition: opacity 0.2s; font-family: 'DM Sans', sans-serif;
+}
+.bnav-btn.active { opacity: 1; }
+.bnav-ico { font-size: 20px; }
+.bnav-lbl { font-size: 10px; color: var(--brown); letter-spacing: 0.3px; }
+.bnav-btn.active .bnav-lbl { color: var(--accent); }
+
+.toast {
+  position: fixed; bottom: 90px; left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--brown); color: #fff;
+  padding: 10px 20px; border-radius: 30px;
+  font-size: 13px; opacity: 0; pointer-events: none; z-index: 200;
+  transition: all 0.3s; white-space: nowrap; font-weight: 300;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-row">
+    <span class="wordmark">Wander Together</span>
+    <div class="avatars">
+      <div class="av av1">JO</div>
+      <div class="av av2">LI</div>
+    </div>
+  </div>
+  <div class="page-title" id="mainTitle">Jullie<br><em>droomreizen</em></div>
+  <div class="page-sub" id="mainSub">Zomer 2026 · 2 reizigers + baby ☀️</div>
+</div>
+
+<div class="nav-pills">
+  <button class="pill-btn active" onclick="navTo('destinations',0)">Bestemmingen</button>
+  <button class="pill-btn" onclick="navTo('prices',1)">Prijsradar</button>
+  <button class="pill-btn" onclick="navTo('alerts',2)">Alerts</button>
+</div>
+
+<div class="alert-strip" id="alertStrip">
+  <div class="alert-dot-pulse"></div>
+  <div class="alert-txt">Vlucht Algarve gedaald — nu v/a <strong>€118</strong> v/v vanuit Amsterdam</div>
+  <span class="alert-close" onclick="this.parentElement.style.display='none'">×</span>
+</div>
+
+<!-- BESTEMMINGEN -->
+<div class="page active" id="page-destinations">
+  <div class="dest-list" id="destList"></div>
+  <div class="dream-divider">
+    <div class="dream-line"></div>
+    <span class="dream-txt">droomlijst voor later</span>
+    <div class="dream-line"></div>
+  </div>
+  <div class="dest-list" id="dreamList" style="margin-bottom:1rem;"></div>
+</div>
+
+<!-- PRIJSRADAR -->
+<div class="page" id="page-prices">
+  <div class="price-page">
+    <div class="api-note">
+      <span>💡</span>
+      <span>Vul jouw RapidAPI sleutel in via <strong>Alerts</strong> om live vluchprijzen op te halen. Gratis account aanmaken op <strong>rapidapi.com</strong> → zoek "Skyscanner".</span>
+    </div>
+    <div class="section-eyebrow">Vluchten vanuit Amsterdam</div>
+    <div class="price-card" id="priceList"></div>
+    <div class="tip-card">
+      <div class="tip-title">Tip voor zomer 2026</div>
+      <div class="tip-text">Boek vluchten vóór april — zomerprijzen stijgen sterk na Pasen. De Algarve en Mallorca zijn momenteel het voordeligst vanuit Amsterdam. Vroegboekkorting kan tot 40% schelen.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERTS -->
+<div class="page" id="page-alerts">
+  <div class="alerts-page">
+    <div class="form-card">
+      <div class="form-title">Jullie e-mailadressen</div>
+      <div class="form-sub">Beide adressen ontvangen elke alert automatisch</div>
+      <div class="field"><label class="field-label">Jouw e-mail</label><input class="field-input" type="email" id="email1" placeholder="jij@email.com"></div>
+      <div class="field"><label class="field-label">Lieke haar e-mail</label><input class="field-input" type="email" id="email2" placeholder="lieke@email.com"></div>
+    </div>
+    <div class="form-card">
+      <div class="form-title">RapidAPI sleutel</div>
+      <div class="form-sub">Maak een gratis account aan op rapidapi.com → zoek "Skyscanner 50" → kopieer jouw API key hieronder. Na het opslaan worden prijzen automatisch ververst.</div>
+      <div class="field"><label class="field-label">API sleutel</label><input class="field-input" type="password" id="apikey" placeholder="Plak hier jouw RapidAPI key"></div>
+      <div class="field-row">
+        <div class="field"><label class="field-label">Alert onder (EU)</label><input class="field-input" type="number" id="thresh-eu" placeholder="€ 150"></div>
+        <div class="field"><label class="field-label">Alert onder (ver)</label><input class="field-input" type="number" id="thresh-long" placeholder="€ 700"></div>
+      </div>
+      <button class="save-btn" onclick="saveSettings()">Opslaan en activeren</button>
+    </div>
+    <div class="form-card">
+      <div class="form-title">Welke alerts?</div>
+      <div class="form-sub">Zet aan wat relevant is voor jullie</div>
+      <div class="toggle-item"><div><div class="ti-label">Prijsdaling vluchten</div><div class="ti-sub">Bij daling van meer dan €20</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+      <div class="toggle-item"><div><div class="ti-label">Prijsdaling hotels</div><div class="ti-sub">Bij daling van meer dan 15%</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+      <div class="toggle-item"><div><div class="ti-label">Speciale evenementen</div><div class="ti-sub">Festivals, markten, seizoenen</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+      <div class="toggle-item"><div><div class="ti-label">Reisadvies-updates</div><div class="ti-sub">Veiligheid, visa, gezondheid</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+    </div>
+    <div class="form-card">
+      <div class="form-title">Recente alerts</div>
+      <div class="form-sub">Laatste meldingen voor jullie bestemmingen</div>
+      <div class="log-item"><div class="log-dot" style="background:#5aa85a"></div><div><div class="log-text">🇵🇹 Algarve — vlucht gedaald naar <strong>€118</strong> v/v</div><div class="log-time">Vandaag, 09:14</div></div></div>
+      <div class="log-item"><div class="log-dot" style="background:#5aa85a"></div><div><div class="log-text">🇬🇷 Kreta — prijs gedaald met €20, nu <strong>€155</strong></div><div class="log-time">Gisteren, 17:32</div></div></div>
+      <div class="log-item"><div class="log-dot" style="background:#e8a030"></div><div><div class="log-text">🇪🇸 Ibiza — prijs gestegen met €30. Vroeg boeken aanbevolen.</div><div class="log-time">2 dagen geleden</div></div></div>
+      <div class="log-item"><div class="log-dot" style="background:#5080c8"></div><div><div class="log-text">🍼 Tip: Alcúdia (Mallorca) heeft ondiep water — ideaal voor baby</div><div class="log-time">3 dagen geleden</div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <button class="bnav-btn active" id="bn-0" onclick="navTo('destinations',0)"><span class="bnav-ico">🗺</span><span class="bnav-lbl">Bestemmingen</span></button>
+  <button class="bnav-btn" id="bn-1" onclick="navTo('prices',1)"><span class="bnav-ico">📊</span><span class="bnav-lbl">Prijzen</span></button>
+  <button class="bnav-btn" id="bn-2" onclick="navTo('alerts',2)"><span class="bnav-ico">🔔</span><span class="bnav-lbl">Alerts</span></button>
+</div>
+
+<div class="toast" id="toast">✓ Opgeslagen</div>
+
+<script>
+const DESTINATIONS = [
+  { flag:'🇵🇹', name:'Algarve',   region:'Portugal · Faro, Lagos, Albufeira', iata:'FAO', flight:'2u30', hotel:'v/a €70',  visum:'Nee', budget:'± €950',   price:118, trend:'down', delta:35,  badges:['🍼 Baby-top','2u30 vliegen'],    spots:['Praia da Marinha','Lagos Oude Stad','Ponta da Piedade','Benagil Grotte','Sagres'],           sky:'ams/fao',  bkg:'algarve',            air:'Algarve--Portugal' },
+  { flag:'🇪🇸', name:'Mallorca',  region:'Spanje · Alcúdia, Palma, Sóller',  iata:'PMI', flight:'2u15', hotel:'v/a €80',  visum:'Nee', budget:'± €1.000', price:130, trend:'flat',delta:0,   badges:['🍼 Gezinsstrand','2u15 vliegen'], spots:['Alcúdia Strand','Palma Kathedraal','Tramuntana Bergen','Cala Mondragó','Sóller Trein'],      sky:'ams/pmi',  bkg:'mallorca',           air:'Mallorca' },
+  { flag:'🇪🇸', name:'Tenerife',  region:'Spanje · Canarische Eilanden',     iata:'TFS', flight:'4u',   hotel:'v/a €75',  visum:'Nee', budget:'± €1.050', price:145, trend:'flat',delta:0,   badges:['🍼 Babypools','Heel jaar zon'],   spots:['Teide Vulkaan','Los Gigantes','Playa las Américas','Loro Park'],                              sky:'ams/tfs',  bkg:'tenerife',           air:'Tenerife' },
+  { flag:'🇬🇷', name:'Kreta',     region:'Griekenland · Chania, Heraklion', iata:'HER', flight:'3u30', hotel:'v/a €65',  visum:'Nee', budget:'± €900',   price:155, trend:'down', delta:20,  badges:['Mei–jun ideaal','3u30 vliegen'], spots:['Chania Haven','Elafonissi Strand','Balos Lagune','Knossos Paleis'],                            sky:'ams/her',  bkg:'crete',              air:'Crete--Greece' },
+  { flag:'🇪🇸', name:'Ibiza',     region:'Spanje · Noord rustig, Santa Eulària',iata:'IBZ',flight:'2u30',hotel:'v/a €90', visum:'Nee', budget:'± €1.100', price:190, trend:'up',  delta:30,  badges:['Zonsondergangen','2u30 vliegen'],spots:['Cala Conta','Dalt Vila','Portinatx','Santa Eulària','Formentera'],                                sky:'ams/ibz',  bkg:'ibiza',              air:'Ibiza' },
+  { flag:'🇭🇷', name:'Kroatië',   region:'Dalmatische Kust · Split & Hvar',  iata:'SPU', flight:'2u',   hotel:'v/a €75',  visum:'Nee', budget:'± €1.000', price:220, trend:'flat',delta:0,   badges:['Kristalhelder water','2u vliegen'],spots:['Diocletianus Paleis','Hvar Eiland','Plitvice Meren','Zlatni Rat'],                             sky:'ams/spu',  bkg:'split+croatia',      air:'Split--Croatia' },
+  { flag:'🇮🇹', name:'Toscane',   region:'Italië · Florence, Siena, Chianti', iata:'FLR', flight:'2u',   hotel:'v/a €80',  visum:'Nee', budget:'± €1.050', price:130, trend:'flat',delta:0,   badges:['Cultuur & wijn','2u vliegen'],   spots:['Florence Duomo','Val d\'Orcia','Siena Piazza','San Gimignano','Cinque Terre'],                  sky:'ams/flr',  bkg:'tuscany',            air:'Tuscany--Italy' },
+  { flag:'🇮🇹', name:'Sicilië',   region:'Italië · Palermo, Taormina',       iata:'PMO', flight:'3u',   hotel:'v/a €70',  visum:'Nee', budget:'± €950',   price:175, trend:'up',  delta:25,  badges:['Etna vulkaan','3u vliegen'],     spots:['Taormina','Etna Vulkaan','Cefalù','Valle dei Templi'],                                        sky:'ams/pmo',  bkg:'sicily',             air:'Sicily--Italy' },
+  { flag:'🇲🇦', name:'Agadir',    region:'Marokko · Atlantische Kust',       iata:'AGA', flight:'3u15', hotel:'v/a €55',  visum:'Nee', budget:'± €750',   price:130, trend:'flat',delta:0,   badges:['🍼 Vlak strand','3u15 vliegen'],  spots:['Agadir Strand','Souk El Had','Kasbah','Essaouira dagtrip'],                                  sky:'ams/aga',  bkg:'agadir',             air:'Agadir--Morocco' },
+];
+
+const DREAMS = [
+  { flag:'🐠', name:'Malediven',  region:'Indische Oceaan · Atollen',         iata:'MLE', flight:'11u',  hotel:'v/a €180', visum:'On arrival', budget:'± €2.500', price:null, trend:'flat',delta:0, badges:['Overwater bungalow','Als baby groter is'], spots:['Baa Atoll','Hanifaru Bay','Overwater Villa','Snorkelen met roggen'], sky:'ams/mle', bkg:'maldives',        air:'Maldives' },
+  { flag:'🍋', name:'Amalfikust', region:'Italië · Positano, Ravello',        iata:'NAP', flight:'2u30', hotel:'v/a €110', visum:'Nee',         budget:'± €1.400', price:null, trend:'flat',delta:0, badges:['Moeilijk met kinderwagen','Als baby groter is'], spots:['Positano','Ravello','Capri dagtrip','Pompei'], sky:'ams/nap', bkg:'amalfi+coast',    air:'Amalfi-Coast' },
+];
+
+function trendClass(t) { return t === 'down' ? 'trend-down' : t === 'up' ? 'trend-up' : 'trend-flat'; }
+function trendLabel(t, d) { return t === 'down' ? `↓ €${d} goedkoper` : t === 'up' ? `↑ €${d} duurder` : '→ stabiel'; }
+
+function renderCard(d, isDream) {
+  const priceHtml = isDream
+    ? `<div class="card-price" style="color:var(--muted);font-size:20px;">droomdoel</div><span class="price-trend trend-flat" style="color:var(--muted);">± €${d.iata === 'MLE' ? 1200 : 180}</span>`
+    : `<div class="card-price" data-iata="${d.iata}">€${d.price}</div><span class="price-trend ${trendClass(d.trend)}">${trendLabel(d.trend, d.delta)}</span><div class="live-badge"><span class="live-dot"></span> live</div>`;
+
+  return `
+  <div class="dest-card" onclick="expand(this)">
+    <div class="card-face">
+      <div class="card-left">
+        <span class="card-flag">${d.flag}</span>
+        <div class="card-name">${d.name}</div>
+        <div class="card-region">${d.region}</div>
+        <div class="card-badges">${d.badges.map(b => `<span class="badge${b.startsWith('🍼') ? ' badge-baby' : ''}">${b}</span>`).join('')}</div>
+      </div>
+      <div class="card-right">
+        <div class="card-price-sub">v/v per persoon</div>
+        ${priceHtml}
+      </div>
+    </div>
+    <div class="card-chevron"><span class="chevron-icon">▾</span></div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="meta-strip">
+          <div class="meta-item"><div class="meta-lbl">Vlucht</div><div class="meta-val">${d.flight}</div></div>
+          <div class="meta-item"><div class="meta-lbl">Hotel/nacht</div><div class="meta-val">${d.hotel}</div></div>
+          <div class="meta-item"><div class="meta-lbl">Visum</div><div class="meta-val">${d.visum}</div></div>
+          <div class="meta-item"><div class="meta-lbl">Week budget</div><div class="meta-val">${d.budget}</div></div>
+        </div>
+        <div class="spots-label">Hotspots</div>
+        <div class="spots-row">${d.spots.map(s => `<span class="spot">${s}</span>`).join('')}</div>
+        <div class="book-row">
+          <a class="book-link bl-sky" href="https://www.skyscanner.nl/flights/${d.sky}/" target="_blank"><span class="bl-ico">✈</span>Skyscanner</a>
+          <a class="book-link bl-bkg" href="https://www.booking.com/searchresults.html?ss=${d.bkg}" target="_blank"><span class="bl-ico">🏨</span>Booking</a>
+          <a class="book-link bl-air" href="https://www.airbnb.nl/s/${d.air}/homes" target="_blank"><span class="bl-ico">🏠</span>Airbnb</a>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderPriceRow(d) {
+  return `<div class="price-item">
+    <div class="pi-left"><span class="pi-flag">${d.flag}</span><div><div class="pi-name">${d.name}</div><div class="pi-route">AMS → ${d.iata}</div></div></div>
+    <div class="pi-right"><div class="pi-price ${trendClass(d.trend)}" data-price-iata="${d.iata}">€${d.price}</div><div class="pi-trend ${trendClass(d.trend)}">${trendLabel(d.trend, d.delta)}</div></div>
+  </div>`;
+}
+
+document.getElementById('destList').innerHTML = DESTINATIONS.map(d => renderCard(d, false)).join('');
+document.getElementById('dreamList').innerHTML = DREAMS.map(d => renderCard(d, true)).join('');
+document.getElementById('priceList').innerHTML = DESTINATIONS.map(d => renderPriceRow(d)).join('');
+
+function expand(card) {
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.dest-card.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+
+const PAGE_DATA = {
+  destinations: { title: 'Jullie<br><em>droomreizen</em>', sub: 'Zomer 2026 · 2 reizigers + baby ☀️' },
+  prices:        { title: 'Prijs<br><em>radar</em>',        sub: 'Live vluchprijzen vanuit Amsterdam' },
+  alerts:        { title: 'Alert<br><em>instellingen</em>', sub: 'Ontvang meldingen op maat' },
+};
+const PAGE_KEYS = ['destinations','prices','alerts'];
+
+function navTo(page, idx) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.pill-btn').forEach((b,i) => b.classList.toggle('active', i === idx));
+  document.querySelectorAll('.bnav-btn').forEach((b,i) => b.classList.toggle('active', i === idx));
+  document.getElementById('mainTitle').innerHTML = PAGE_DATA[page].title;
+  document.getElementById('mainSub').textContent = PAGE_DATA[page].sub;
+  window.scrollTo(0,0);
+}
+
+function saveSettings() {
+  const k = document.getElementById('apikey').value.trim();
+  const e1 = document.getElementById('email1').value.trim();
+  const e2 = document.getElementById('email2').value.trim();
+  if (k)  localStorage.setItem('wt_key', k);
+  if (e1) localStorage.setItem('wt_e1', e1);
+  if (e2) localStorage.setItem('wt_e2', e2);
+  const thresh = document.getElementById('thresh-eu').value;
+  if (thresh) localStorage.setItem('wt_thresh', thresh);
+  showToast('✓ Opgeslagen! Prijzen worden ververst.');
+  if (k) fetchLivePrices(k);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── RAPIDAPI LIVE PRICE FETCH ──
+async function fetchLivePrices(apiKey) {
+  const today = new Date();
+  const travelDate = '2026-07-15';
+
+  for (const d of DESTINATIONS) {
+    try {
+      const res = await fetch(
+        `https://skyscanner50.p.rapidapi.com/api/v1/searchFlights?origin=AMS&destination=${d.iata}&date=${travelDate}&adults=2&currency=EUR&locale=nl-NL`,
+        {
+          headers: {
+            'X-RapidAPI-Key': apiKey,
+            'X-RapidAPI-Host': 'skyscanner50.p.rapidapi.com'
+          }
+        }
+      );
+      if (!res.ok) continue;
+      const json = await res.json();
+      const raw = json?.data?.itineraries?.[0]?.price?.raw;
+      if (raw && raw > 0) {
+        const price = '€' + Math.round(raw);
+        document.querySelectorAll(`[data-iata="${d.iata}"]`).forEach(el => { el.textContent = price; });
+        document.querySelectorAll(`[data-price-iata="${d.iata}"]`).forEach(el => { el.textContent = price; });
+      }
+    } catch (err) { /* silently keep fallback price */ }
+  }
+}
+
+// Restore on load
+window.addEventListener('load', () => {
+  const k = localStorage.getItem('wt_key');
+  const e1 = localStorage.getItem('wt_e1');
+  const e2 = localStorage.getItem('wt_e2');
+  const th = localStorage.getItem('wt_thresh');
+  if (k)  { document.getElementById('apikey').value = k; fetchLivePrices(k); }
+  if (e1) document.getElementById('email1').value = e1;
+  if (e2) document.getElementById('email2').value = e2;
+  if (th) document.getElementById('thresh-eu').value = th;
+});
+</script>
+</body>
+</html>
